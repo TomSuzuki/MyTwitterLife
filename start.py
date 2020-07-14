@@ -61,8 +61,9 @@ if __name__ == "__main__":
     # データの読み込み
     all_count = 0
     set_count = 0
+    maxID = -1
     for i in range(count_load):
-        if i == 0:
+        if maxID == -1:
             t = api.user_timeline(id=targetUser, count=200)
         else:
             t = api.user_timeline(id=targetUser, count=200, max_id=maxID)
@@ -100,12 +101,15 @@ if __name__ == "__main__":
 
     # 表示
     d = today
-    line_num = 10 + 3+ 6 + 3 + 2*24 + 2
+    line_num = 10 + 3 + 6 + 3 + 2*24 + 2
     weekday = ["月", "火", "水", "木", "金", "土", "日"]
     print("".rjust(line_num, '─'))
+    print("".rjust(20, ' ') + "0" + "".rjust(23, ' ') +
+          "12" + "".rjust(24, ' ') + "24")
     for i in range(day_num):
         d = d - datetime.timedelta(days=1)
-        t = str(d) + " " + weekday[d.weekday()] + " [" + str(data[str(d)]["count"]).rjust(3) + "] | "
+        t = str(d) + " " + weekday[d.weekday()] + \
+            " [" + str(data[str(d)]["count"]).rjust(3) + "] | "
         for j in range(24):
             for m in ["00", "30"]:
                 if data[str(d)][j][m]:
@@ -119,3 +123,8 @@ if __name__ == "__main__":
     print("".rjust(line_num, '─'))
     print("取得したツイート数", all_count)
     print("表示したツイート数", set_count)
+    print("1日平均", int(set_count/day_num))
+    print("".rjust(line_num, '─'))
+    print("ツイート前の起きてる時間", 30*padding[0])
+    print("ツイート後の起きてる時間", 30*padding[1])
+    print("表示日数", day_num)
