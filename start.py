@@ -35,6 +35,7 @@ if __name__ == "__main__":
     day_num = 14*2  # 最大の日数
     padding = [0, 2]  # どれくらい周りを起きている判定するか [前, 後]（30分単位 / 2は1時間）
     count_load = 6  # count_load×200ツイートさかのぼる
+    time_zone = datetime.timedelta(hours=9)  # 補正時間（全部世界標準時なので）
 
     # 表示の初期化
     os.system('cls')
@@ -68,12 +69,13 @@ if __name__ == "__main__":
         else:
             t = api.user_timeline(id=targetUser, count=200, max_id=maxID)
         for status in t:
+            t_now = time_zone + datetime.datetime(status.created_at.year,
+                                                  status.created_at.month, status.created_at.day, status.created_at.hour, status.created_at.minute)
             maxID = status.id
             all_count = all_count + 1
-            d = datetime.date(status.created_at.year,
-                              status.created_at.month, status.created_at.day)
-            h = status.created_at.hour
-            m = int(status.created_at.minute)
+            d = datetime.date(t_now.year, t_now.month, t_now.day)
+            h = t_now.hour
+            m = int(t_now.minute)
             if m < 30:
                 mm = "00"
             else:
@@ -85,7 +87,7 @@ if __name__ == "__main__":
                 data[str(d)][h][mm] = True
             # 前後を起きている判定にしていく
             for i in range(2):
-                c_d = datetime.datetime(status.created_at.year,
+                c_d = time_zone + datetime.datetime(status.created_at.year,
                                         status.created_at.month, status.created_at.day, status.created_at.hour, status.created_at.minute)
                 for j in range(padding[i]):
                     c_d = c_d + datetime.timedelta(minutes=30) * [-1, 1][i]
@@ -113,9 +115,9 @@ if __name__ == "__main__":
         for j in range(24):
             for m in ["00", "30"]:
                 if data[str(d)][j][m]:
-                    t = t + "■"
+                    t = t + "#"
                 else:
-                    t = t + "─"  # ここはコンソールのフォントによって返る
+                    t = t + "-"  # ここはコンソールのフォントによって返る
         t = t + " |"
         print(t)
 
