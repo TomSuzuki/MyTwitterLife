@@ -58,12 +58,14 @@ if __name__ == "__main__":
             data[str(d)][j] = {}
             data[str(d)][j]["00"] = False
             data[str(d)][j]["30"] = False
+    lastDay = datetime.datetime(d.year, d.month, d.day, 23, 59)
 
     # データの読み込み
     all_count = 0
     set_count = 0
     maxID = -1
-    for i in range(count_load):
+    t_now = lastDay + datetime.timedelta(days=1)
+    while(t_now >= lastDay):
         if maxID == -1:
             t = api.user_timeline(id=targetUser, count=200)
         else:
