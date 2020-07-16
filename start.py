@@ -46,6 +46,14 @@ if __name__ == "__main__":
     targetUser = temp['targetUser']
     api = getApiInstance(temp)
 
+    # コマンドラインからIDを指定
+    xID = input("User ID: ")
+    if(xID != ""):
+        targetUser = xID
+
+    # 表示
+    print("取得中...", targetUser)
+
     # 今日は何日
     data = {}
     today = datetime.date.today() + datetime.timedelta(days=1)
@@ -90,7 +98,7 @@ if __name__ == "__main__":
             # 前後を起きている判定にしていく
             for i in range(2):
                 c_d = time_zone + datetime.datetime(status.created_at.year,
-                                        status.created_at.month, status.created_at.day, status.created_at.hour, status.created_at.minute)
+                                                    status.created_at.month, status.created_at.day, status.created_at.hour, status.created_at.minute)
                 for j in range(padding[i]):
                     c_d = c_d + datetime.timedelta(minutes=30) * [-1, 1][i]
                     p_d = datetime.date(c_d.year, c_d.month, c_d.day)
@@ -104,6 +112,7 @@ if __name__ == "__main__":
                         data[str(p_d)][p_h][mm] = True
 
     # 表示
+    os.system('cls')
     d = today
     line_num = 10 + 3 + 6 + 3 + 2*24 + 2
     weekday = ["月", "火", "水", "木", "金", "土", "日"]
@@ -125,6 +134,7 @@ if __name__ == "__main__":
 
     # 結果
     print("".rjust(line_num, '─'))
+    print("ターゲットユーザー", targetUser)
     print("取得したツイート数", all_count)
     print("表示したツイート数", set_count)
     print("1日平均", int(set_count/day_num))
