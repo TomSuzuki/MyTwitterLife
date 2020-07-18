@@ -66,7 +66,7 @@ if __name__ == "__main__":
             data[str(d)][j] = {}
             data[str(d)][j]["00"] = False
             data[str(d)][j]["30"] = False
-    lastDay = datetime.datetime(d.year, d.month, d.day, 23, 59)
+    lastDay = datetime.datetime(d.year, d.month, d.day, 23, 59) - datetime.timedelta(days=1)
 
     # データの読み込み
     all_count = 0
