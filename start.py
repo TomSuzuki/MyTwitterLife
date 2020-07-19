@@ -32,9 +32,7 @@ def getApiInstance(j):
 
 if __name__ == "__main__":
     # 設定
-    day_num = 14*2  # 最大の日数
     padding = [0, 2]  # どれくらい周りを起きている判定するか [前, 後]（30分単位 / 2は1時間）
-    count_load = 6  # count_load×200ツイートさかのぼる
     time_zone = datetime.timedelta(hours=9)  # 補正時間（全部世界標準時なので）
 
     # 表示の初期化
@@ -45,6 +43,7 @@ if __name__ == "__main__":
     temp = json.load(temp)
     targetUser = temp['targetUser']
     api = getApiInstance(temp)
+    day_num = temp['getDays'] # さかのぼる日数
 
     # コマンドラインからIDを指定
     xID = input("User ID: ")
